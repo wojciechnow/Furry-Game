@@ -1,21 +1,9 @@
-document.addEventListener('DOMContentLoaded',function () {
+
+var Furry = require('./Furry.js');
+var Coin = require('./Coin.js');
 
 
 
-
-
-function Furry  () {
-    this.x=0;
-    this.y=0;
-    this.direction='right';
-}
-
-
-
-function Coin() {
-    this.x=Math.floor(Math.random()*10);
-    this.y=Math.floor(Math.random()*10);
-}
 
 
 function Game () {
@@ -74,7 +62,7 @@ function Game () {
         }
 
     };
-   this.turnFurry = function () {
+    this.turnFurry = function () {
         switch (event.which) {
             case 37:
                 self.furry.direction = 'left';
@@ -91,41 +79,47 @@ function Game () {
 
         }
     };
-   this.checkCoinCollision= function () {
-       if ((this.furry.x === this.coin.x) && (this.furry.y === this.coin.y)){
-           this.board[this.index(this.coin.x, this.coin.y)].classList.remove('coin');
-           this.score++;
-           document.querySelector('#score div strong').innerText = this.score;
-        this.coin=new Coin();
-           this.showCoin()
-       }
+    this.checkCoinCollision= function () {
+        if ((this.furry.x === this.coin.x) && (this.furry.y === this.coin.y)){
+            this.board[this.index(this.coin.x, this.coin.y)].classList.remove('coin');
+            this.score++;
+            document.querySelector('#score div strong').innerText = this.score;
+            this.coin=new Coin();
+            this.showCoin()
+        }
 
-   };
-this.gameOver = function () {
-       if ((this.furry.x < 0) || (this.furry.y < 0) || (this.furry.x > 9) || (this.furry.y > 9) ){
+    };
+    this.gameOver = function () {
+        if ((this.furry.x < 0) || (this.furry.y < 0) || (this.furry.x > 9) || (this.furry.y > 9) ){
 
-           clearInterval(this.idSetInterval);
-           this.hideVisibleFurry();
-
-       }
-
-}
-
-
-
+            clearInterval(this.idSetInterval);
+            this.hideVisibleFurry();
+            var over=document.getElementById('over')
+            over.classList.remove('invisible');
+            over.querySelector('h1').innerText = 'GAME OVER'
+            over.querySelector('h2').innerText = "Your score:"
+            over.querySelector('h3').innerText = this.score
 
 
+        }
 
     }
+
+
+
+
+
+
+}
 var game1= new Game();
 game1.showFurry();
 game1.showCoin();
 game1.startGame();
 
-console.log("kkhh");
-    document.addEventListener('keydown', function(event){
+document.addEventListener('keydown', function(event){
 
-        game1.turnFurry(event);
+    game1.turnFurry(event);
 
-    });
 });
+
+module.exports = Game
